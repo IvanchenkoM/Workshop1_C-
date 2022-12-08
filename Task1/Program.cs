@@ -5,8 +5,9 @@
 
 string secretMsg = "Well done";
 string password = "Qwerty123";
+int attemptsNumber = 3;
 
-for (int i=1; i<=3; i++)
+for (int i=1; i<=attemptsNumber; i++)
 {
     string userAnswer = ReadIn("Enter the password: ");
     int result = string.Compare(userAnswer,password);
