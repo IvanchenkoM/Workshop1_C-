@@ -2,59 +2,95 @@
 // + Добавить еще 4 команды.
 
 bool circle = true;
-string[] stopCircle = {"exit", "setname", "help", "setpassword", "setemail"};
+
+string[] stopCircle = {"exit", "date", "allnotes", "account", "makenote"};
+
+string userEmail = ReadInt("\r\nBefore you start \r\nEnter your e-mail: ");
+string userPassword ="";
+while(circle)
+{
+    userPassword = ReadInt ("\r\nCreate a password: ");
+    string password2 = ReadInt ("\r\nEnter the password again: ");
+    if (userPassword == password2)
+        break;
+    Console.WriteLine("\r\nPasswords do not match. Please try again.");
+}
+
+string userName = ReadInt("\r\nEnter a username:");
+string userNotes="";
 
 while(circle)
 {
-    string userAnswer = ReadIn("Guess the word: ");
-    userAnswer = userAnswer.ToLower().Replace(" ","").Replace("-","");
-    
-    for (int i=0; i < stopCircle.Length; i++)
+    Console.WriteLine("\r\nThere are five options:\r\n-> Account \r\n-> Date \r\n-> Make note \r\n-> All notes \r\n-> Exit");
+    string userChoice = ReadInt("\r\nChoose the option: ");
+    userChoice = userChoice.ToLower().Replace(" ","").Replace("-","");
+   
+    if (userChoice == stopCircle[0])
     {
-        int temp = string.Compare(userAnswer,stopCircle[i]);
-        if (temp == 0)
-        {
-            switch(stopCircle[i])
-            {
-                case "exit":
-                    Console.WriteLine();
-                    Console.WriteLine("Excellent!");
-                    return;
-                
-                case "setname":
-                    Console.WriteLine();
-                    string userName = ReadIn("Set your name:");
-                    Console.WriteLine();
-                    break;
-                
-                case "help":
-                    Console.WriteLine();
-                    Console.WriteLine("There are five options:\r\nHelp \r\nSet Name \r\nSet Password \r\nSet e-mail \r\nExit");
-                    Console.WriteLine();
-                    break;
-                
-                case "setpassword":
-                    Console.WriteLine();
-                    string userPassword = ReadIn("Set your password:");
-                    Console.WriteLine();
-                    break;
-                
-                case "setemail":
-                    Console.WriteLine();
-                    string userEmail = ReadIn("Set your e-mail:");
-                    Console.WriteLine();
-                    break;
-                default:
-                    Console.WriteLine("Wrong word. Try again.");
-                    break;
-
-                
-            }    
-        }
+        Console.WriteLine("\r\nSee you later.");
+        break;
     }
+    else if (userChoice == stopCircle[1])
+    {
+        Console.WriteLine($"\r\nToday {DateTime.Now}");
+    }
+    else if (userChoice == stopCircle[2])
+    {
+        Console.WriteLine($"\r\nYour notes:\r\n{userNotes}");
+    }
+    else if (userChoice == stopCircle[3])
+    {
+        string enteredPassword = ReadInt("\r\nSet password:");
+        if (userPassword == enteredPassword)
+            Console.WriteLine($"\r\nUser name:{userName}\r\nUser e-mail:{userEmail}.");
+        else
+            Console.WriteLine("\r\nWrong password. Try again.");
+    }
+    else if (userChoice == stopCircle[4])
+    {
+        string note = ReadInt("\r\nNote: ");
+        userNotes += note+" - "+DateTime.Now+";\r\n";
+    }                
+    else
+    {
+        Console.WriteLine("\r\nWrong word. Try again.");
+    }
+    
+    //в switch не получилось сделать заполнить userNotes
+    /*switch(userChoice)
+    {
+        case "exit":
+            Console.WriteLine("\r\nSee you later.");
+            return;
+            
+        case "date":
+            Console.WriteLine($"\r\nToday {DateTime.Now}");
+            break;
+                
+        case "makenote":
+            string note = ReadInt("\r\nNote: ");
+            userNotes = userNotes + ";|r\n" + note;
+            break;
+                
+        case "account":
+            string enteredPassword = ReadInt("\r\nSet password:");
+            if (userPassword == enteredPassword)
+                Console.WriteLine($"\r\nUser name:{userName}\r\nUser e-mail:{userEmail}.");
+            else
+                Console.WriteLine("\r\nWrong password. Try again.");
+            break;        
+                
+        case "allnotes":
+            Console.WriteLine($"\r\n{userNotes}");
+            break;
+
+        default:
+            Console.WriteLine("\r\nWrong word. Try again.");
+            break;           
+    }*/
 }
 
-string ReadIn(string msg)
+string ReadInt(string msg)
 {
     Console.Write(msg);
     return Convert.ToString(Console.ReadLine())??String.Empty;
