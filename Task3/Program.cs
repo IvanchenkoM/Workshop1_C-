@@ -25,7 +25,7 @@ while(circle)
     string userChoice = ReadInt("\r\nChoose the option: ");
     userChoice = userChoice.ToLower().Replace(" ","").Replace("-","");
    
-    if (userChoice == stopCircle[0])
+    /*if (userChoice == stopCircle[0])
     {
         Console.WriteLine("\r\nSee you later.");
         break;
@@ -54,10 +54,9 @@ while(circle)
     else
     {
         Console.WriteLine("\r\nWrong word. Try again.");
-    }
+    }*/
     
-    //в switch не получилось сделать заполнить userNotes
-    /*switch(userChoice)
+    switch(userChoice)
     {
         case "exit":
             Console.WriteLine("\r\nSee you later.");
@@ -69,7 +68,7 @@ while(circle)
                 
         case "makenote":
             string note = ReadInt("\r\nNote: ");
-            userNotes = userNotes + ";|r\n" + note;
+            userNotes += note+" - "+DateTime.Now+";\r\n";
             break;
                 
         case "account":
@@ -81,13 +80,13 @@ while(circle)
             break;        
                 
         case "allnotes":
-            Console.WriteLine($"\r\n{userNotes}");
+            Console.WriteLine($"\r\nYour notes:\r\n{userNotes}");
             break;
 
         default:
             Console.WriteLine("\r\nWrong word. Try again.");
             break;           
-    }*/
+    }
 }
 
 string ReadInt(string msg)
