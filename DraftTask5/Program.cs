@@ -4,21 +4,13 @@
 // одной на другую.
 // Курс конвертации просто описать в программе.
 // Программа завершает работу в тот момент, когда решит пользователь. 
-using System.Globalization;
+
 bool circle = true;
-Console.OutputEncoding = System.Text.Encoding.Unicode;
-//Console.WriteLine(System.Globalization.CultureInfo.CurrentCulture.Name); - ru-RU//
 
 Console.WriteLine("\r\nHello!\r\nThis is a currency converter.");
-//System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("en - GB");
 double numberEUR = 70.65;
-//System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("en - US");
 double numberUSD = 100.00;
-//System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("zh - CN");
 double numberCNY = 150.78;
-
-string[] arrayCurrency = {"eur", "usd", "cny"};
-double[] arrayAccount = {numberEUR,numberUSD,numberCNY};
 
 double rateEURtoUSD = 1.06509;
 double rateEURtoCNY = 7.40083;
@@ -167,45 +159,4 @@ double ReadDouble(string msg)
 {
     Console.Write(msg);
     return Convert.ToDouble(Console.ReadLine());
-}
-
-string Converting (string currency)
-{
-    for (int i=0; i < arrayCurrency.Length; i++)
-    {
-        if (currency == arrayCurrency[i])
-        {
-            double amount = ReadDouble($"How many {currency.ToUpper()} do you want to convert?\r\n");
-
-        }
-        
-    }
-    
-    if (amountEUR > numberEUR || amount < 0)
-                        {
-                            Console.WriteLine($"\r\nYou have {string.Format("{0:C2} EUR",numberEUR)}. Try again.");
-                            break;
-                        }
-                        string convertCurrencyEUR = ReadString($"What currency do you want to transfer {amountEUR} {currency.ToUpper()}: USD or CNY?\r\n");
-                        convertCurrencyEUR = convertCurrencyEUR.ToLower().Replace(" ","");
-                        if (convertCurrencyEUR == currency)
-                        {
-                            Console.WriteLine($"\r\nYou have chosen the same currency. Try again.");
-                        }
-                        else if (convertCurrencyEUR == "usd")
-                        {
-                            numberEUR -= amountEUR;
-                            numberUSD += amountEUR*rateEURtoUSD;
-                            Console.WriteLine($"\r\nYou convert {amountEUR} {currency.ToUpper()} to {string.Format("{0:C2} USD",amountEUR*rateEURtoUSD)}.");
-                            Console.WriteLine($"\r\nYour accounts:\r\n{string.Format("EUR = {0:C2}",numberEUR)} \r\n{string.Format("USD = {0:C2}",numberUSD)} \r\n{string.Format("CNY = {0:C2}",numberCNY)}\r\n");
-                            converCircle = false;
-                        }
-                        else if (convertCurrencyEUR == "cny")
-                        {
-                            numberEUR -= amountEUR;
-                            numberCNY += amountEUR*rateEURtoCNY;
-                            Console.WriteLine($"\r\nYou convert {amountEUR} {currency.ToUpper()} to {string.Format("{0:C2} CNY",amountEUR*rateEURtoCNY)}.");
-                            Console.WriteLine($"\r\nYour accounts:\r\n{string.Format("EUR = {0:C2}",numberEUR)} \r\n{string.Format("USD = {0:C2}",numberUSD)} \r\n{string.Format("CNY = {0:C2}",numberCNY)}\r\n");
-                            converCircle = false;
-                        }
 }
