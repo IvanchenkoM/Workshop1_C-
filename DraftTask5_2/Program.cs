@@ -42,7 +42,7 @@ while(circle)
             Console.WriteLine($"\r\nYour accounts:\r\n{WriteCurrencySing(arrayCurrency[0],arrayAccount[0])} \r\n{WriteCurrencySing(arrayCurrency[1],arrayAccount[1])} \r\n{WriteCurrencySing(arrayCurrency[2],arrayAccount[2])}\r\n");
             break;
                 
-        case "CONVERCION":
+        case "CONVERSION":
             bool converCircle = true;
             while(converCircle)
             {
@@ -116,12 +116,17 @@ bool Calculation (string entryCurrency, double number, string outgoingCurrency, 
 string WriteCurrencySing (string whatCurrency, double number)
 {
     string result = "";
+    var usd = new CultureInfo("en-US");
+    var cny =  new CultureInfo("zh-CN");
     if (whatCurrency == arrayCurrency[0])
-        result = number.ToString("C", new CultureInfo("en-GB"));
+    {
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr");
+        Console.WriteLine("{0:C2}", arrayAccount[0]);
+    }
     else if (whatCurrency == arrayCurrency[1])
-        result = number.ToString("C", new CultureInfo("en-US"));
+        Console.WriteLine($"{arrayAccount[1]} {usd.NumberFormat.CurrencySymbol}");
     else if (whatCurrency == arrayCurrency[2])
-        result = number.ToString("C", new CultureInfo("zh-CN"));
+        Console.WriteLine($"{arrayAccount[2]} {cny.NumberFormat.CurrencySymbol}");
     return result;
 }
 
