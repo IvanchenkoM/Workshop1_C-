@@ -7,7 +7,7 @@
 
 using System.Globalization;
 bool circle = true;
-//Console.OutputEncoding = System.Text.Encoding.Unicode;
+Console.OutputEncoding = System.Text.Encoding.Unicode;
 
 Console.WriteLine("\r\nHello!\r\nThis is a currency converter.");
 double numberEUR = 70.65;
@@ -43,7 +43,8 @@ while(circle)
             break;
                 
         case "CONVERSION":
-            bool converCircle = true;
+            Console.WriteLine("\r\nSee you later.");
+            /*bool converCircle = true;
             while(converCircle)
             {
                 string currency = ReadString("\r\nWhat currency do you want to convert: EUR, USD or CNY?\r\n");
@@ -72,7 +73,7 @@ while(circle)
                     }
                 }
 
-            }
+            }*/
             break;
                 
         default:
@@ -87,7 +88,7 @@ string ReadString(string msg)
     return Convert.ToString(Console.ReadLine())??String.Empty;
 }
 
-double ReadDouble(string msg)
+/*double ReadDouble(string msg)
 {
     Console.Write(msg);
     return Convert.ToDouble(Console.ReadLine());
@@ -111,26 +112,35 @@ bool Calculation (string entryCurrency, double number, string outgoingCurrency, 
     }
     Console.WriteLine($"\r\nYour accounts:\r\n{WriteCurrencySing(arrayCurrency[0],arrayAccount[0])} \r\n{WriteCurrencySing(arrayCurrency[1],arrayAccount[1])} \r\n{WriteCurrencySing(arrayCurrency[2],arrayAccount[2])}\r\n");
     return stopCircle = false;
-}
+}*/
 
 string WriteCurrencySing (string whatCurrency, double number)
 {
+    
     string result = "";
-    var usd = new CultureInfo("en-US");
-    var cny =  new CultureInfo("zh-CN");
+    
     if (whatCurrency == arrayCurrency[0])
     {
-        Thread.CurrentThread.CurrentCulture = new CultureInfo("fr");
-        Console.WriteLine("{0:C2}", arrayAccount[0]);
+        CultureInfo.CurrentCulture = new CultureInfo("fr-Be");
+        Console.WriteLine(String.Format("{0:C2}",arrayAccount[0]));
+        //Thread.CurrentThread.CurrentCulture = new CultureInfo("fr");
+        //Console.WriteLine("{0:C2}", arrayAccount[0]);
     }
     else if (whatCurrency == arrayCurrency[1])
-        Console.WriteLine($"{arrayAccount[1]} {usd.NumberFormat.CurrencySymbol}");
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("en-US");
+        Console.WriteLine(String.Format("{0:C2}",arrayAccount[1]));
+    }
     else if (whatCurrency == arrayCurrency[2])
-        Console.WriteLine($"{arrayAccount[2]} {cny.NumberFormat.CurrencySymbol}");
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("zh-CN");
+        Console.WriteLine(String.Format("{0:C2}",arrayAccount[2]));
+        //Console.WriteLine($"{arrayAccount[2]} {cny.NumberFormat.CurrencySymbol}");
+    }
     return result;
 }
 
-string ReadOutgoingCurrency (double number, string incomingCurrency)
+/*string ReadOutgoingCurrency (double number, string incomingCurrency)
 {
     List<string> listCurrency = new List<string>();
     listCurrency.AddRange(arrayCurrency);
@@ -141,4 +151,4 @@ string ReadOutgoingCurrency (double number, string incomingCurrency)
     }
     string result = ReadString($"What currency do you want to transfer {number} {incomingCurrency}: {listCurrency[0]} or {listCurrency[1]}?\r\n");
     return result; 
-}
+}*/

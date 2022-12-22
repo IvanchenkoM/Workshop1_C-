@@ -1,4 +1,7 @@
-﻿bool circle = true;
+﻿using System.Globalization;
+Console.OutputEncoding = System.Text.Encoding.Unicode;
+
+bool circle = true;
 Console.WriteLine("\r\nHello! \r\nThis is a currency converter.");
 
 double numberEUR = 55.66;
@@ -39,28 +42,31 @@ while(circle)
             break;
             
         case "BALANCE":
+        case "BAL":
             Console.WriteLine("\r\nYour accounts:\r\n");
             foreach (var sign in accountBalance)
             {
-                Console.WriteLine($"{sign.Key} account = {sign.Value} {sign.Key}");
+                Console.WriteLine($"{sign.Key} account = {WriteCurrencySing(sign.Key, sign.Value)}");
+                //Console.Write(WriteCurrencySing(sign.Key, sign.Value));
             }
             break;
                 
         case "CONVERSION":
+        case "CON":
             bool converCircle = true;
             while(converCircle)
             {
-                string currency = ReadString("\r\nWhat currency do you want to convert: EUR, USD or CNY?\r\n");
+                string currency = ReadString("\r\nWhat currency do you want to convert: EUR, USD or CNY?\t");
                 currency = currency.ToUpper().Replace(" ","");
                 for (int i=0; i < accountBalance.Keys.Count; i++)
                 {
                     if (currency == accountBalance.ElementAt(i).Key)
                     {
-                        double amount = ReadDouble($"How many {currency.ToUpper()} do you want to convert?\r\n");
-
+                        double amount = ReadDouble($"How many {currency.ToUpper()} do you want to convert?\t");
+                        
                         if (amount > accountBalance.ElementAt(i).Value || amount < 0)
                         {
-                            Console.WriteLine($"\r\nYou have {accountBalance.ElementAt(i).Value} {accountBalance.ElementAt(i).Key} in your account. Try again.");
+                            Console.WriteLine($"\r\nYou have {WriteCurrencySing(accountBalance.ElementAt(i).Key, accountBalance.ElementAt(i).Value)} in your account. Try again.");
                             break;
                         }
                         
@@ -71,8 +77,18 @@ while(circle)
                             Console.WriteLine($"\r\nYou have chosen the same currency. Try again.");
                             break;
                         }
+                        else if (convertCurrency!=accountBalance.ElementAt(0).Key && convertCurrency!=accountBalance.ElementAt(1).Key && convertCurrency!=accountBalance.ElementAt(2).Key) 
+                        {
+                            Console.WriteLine("\r\nYou enter the wrong currency. Try again.");
+                            break;
+                        }
                         Calculation(currency,amount,convertCurrency);
                         converCircle = false;
+                    }
+                    else if ((currency!=accountBalance.ElementAt(0).Key && currency!=accountBalance.ElementAt(1).Key && currency!=accountBalance.ElementAt(2).Key))
+                    {
+                        Console.WriteLine("\r\nYou enter the wrong currency. Try again.");
+                        break;
                     }
                 }
             }
@@ -93,7 +109,16 @@ string ReadString(string msg)
 double ReadDouble(string msg)
 {
     Console.Write(msg);
-    return Convert.ToDouble(Console.ReadLine());
+    double temp = Convert.ToDouble(Console.ReadLine());
+    if (int.TryParse(Console.ReadLine(),out int num))
+    {
+        Console.Write("");
+    }
+    else
+    {
+        Console.WriteLine("Please enter only number");
+    }
+    return temp;
 }
 
 void Calculation (string entryCurrency, double number, string outgoingCurrency)
@@ -129,7 +154,7 @@ void Calculation (string entryCurrency, double number, string outgoingCurrency)
     Console.WriteLine("\r\nYour accounts:\r\n");
     foreach (var sign in accountBalance)
     {
-        Console.WriteLine($"{sign.Key} account = {sign.Value} {sign.Key}");
+        Console.WriteLine($"{sign.Key} account = {WriteCurrencySing(sign.Key, sign.Value)}");
     }
 }
 
@@ -143,6 +168,27 @@ string ReadOutgoingCurrency (double number, string incomingCurrency)
         if (listCurrency[i] == incomingCurrency)
             listCurrency.Remove(listCurrency[i]);
     }
-    string result = ReadString($"What currency do you want to transfer {number} {incomingCurrency}: {listCurrency[0]} or {listCurrency[1]}?\r\n");
+    string result = ReadString($"What currency do you want to transfer {number} {incomingCurrency}: {listCurrency[0]} or {listCurrency[1]}?\t");
     return result; 
+}
+
+string WriteCurrencySing (string whatCurrency, double number)
+{
+    string result = "";
+    if (whatCurrency == accountBalance.ElementAt(0).Key)
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("fr-Be");
+        result = String.Format("{0:C2}",accountBalance.ElementAt(0).Value);
+    }
+    else if (whatCurrency == accountBalance.ElementAt(1).Key)
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("en-US");
+        result = String.Format("{0:C2}",accountBalance.ElementAt(1).Value);
+    }
+    else if (whatCurrency == accountBalance.ElementAt(2).Key)
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("zh-CN");
+        result = String.Format("{0:C2}",accountBalance.ElementAt(2).Value);
+    }
+    return result;
 }
