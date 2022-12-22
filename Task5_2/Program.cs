@@ -14,16 +14,16 @@ Dictionary<string, double> accountBalance = new Dictionary<string, double>()
 
 double rateEURtoUSD = 1.06000;
 double rateEURtoCNY = 7.42000;
-double rateUSDtoEUR = 0.94340;
-double rateUSDtoCNY = 7.00000;
+double rateUSDtoEUR = 0.94047;
+double rateUSDtoCNY = 6.99000;
 double rateCNYtoEUR = 0.13474;
-double rateCNYtoUSD = 0.14292;
+double rateCNYtoUSD = 0.14297;
 
-double[,] arrayRate = new double[3,2] 
+double[,] arrayRate = new double[3,3] 
 {
-    {rateEURtoUSD,rateEURtoCNY},
-    {rateUSDtoEUR,rateUSDtoCNY},
-    {rateCNYtoEUR,rateCNYtoUSD}
+    {0,rateEURtoUSD,rateEURtoCNY},
+    {rateUSDtoEUR,0,rateUSDtoCNY},
+    {rateCNYtoEUR,rateCNYtoUSD,0}
 };
 
 while(circle)
@@ -71,8 +71,8 @@ while(circle)
                             Console.WriteLine($"\r\nYou have chosen the same currency. Try again.");
                             break;
                         }
-
-                        Calculation(currency,amount,convertCurrency,converCircle);
+                        Calculation(currency,amount,convertCurrency);
+                        converCircle = false;
                     }
                 }
             }
@@ -96,44 +96,33 @@ double ReadDouble(string msg)
     return Convert.ToDouble(Console.ReadLine());
 }
 
-bool Calculation (string entryCurrency, double number, string outgoingCurrency, bool stopCircle)
+void Calculation (string entryCurrency, double number, string outgoingCurrency)
 {
-    //Dictionary<string, double>.ValueCollection quantity = accountBalance.Values;
-    //double[] myIntArray = new double[3];
-    //quantity.CopyTo(myIntArray,3);
-    //ICollection<double> values = accountBalance.Values;
     double[] myIntArray = new double[3];
-    //values.CopyTo(myIntArray,3);
     for (int i=0; i<myIntArray.Length; i++)
     {
         myIntArray[i] = accountBalance.ElementAt(i).Value;
     }
 
-    for (int i=0; i < myIntArray.Length; i++)
+    for (int i=0; i < arrayRate.GetLength(0); i++)
     {
         if (entryCurrency == accountBalance.ElementAt(i).Key)
         {
             myIntArray[i] -= number;
-            //accountBalance.ElementAt(i).Value = myIntArray[i];
             accountBalance.Remove(entryCurrency);
             accountBalance.Add(entryCurrency, myIntArray[i]);
-            break;
-        }
-    }
-          
 
-    for (int i=0; i < arrayRate.GetLength(0); i++)
-    {
-        if (outgoingCurrency == accountBalance.ElementAt(i).Key)
-        {
-            for (int j=0; j < arrayRate.GetLength(1); j++)
+            for (int j=0; j < arrayRate.GetLength(0); j++)
             {
-            double temp = number*arrayRate[i,j];
-            myIntArray[i] += temp;
-            accountBalance.Remove(outgoingCurrency);
-            accountBalance.Add(outgoingCurrency, myIntArray[i]);
-            Console.WriteLine($"\r\nYou convert {number} {entryCurrency} to {temp} {accountBalance.ElementAt(i).Key}.");
-            break;
+                if (outgoingCurrency == accountBalance.ElementAt(j).Key)
+                {
+                    double temp = number*arrayRate[i,j];
+                    myIntArray[j] += temp;
+                    accountBalance.Remove(outgoingCurrency);
+                    accountBalance.Add(outgoingCurrency, myIntArray[j]);
+                    Console.WriteLine($"\r\nYou convert {number} {entryCurrency} to {temp} {accountBalance.ElementAt(j).Key}.");
+                    break;
+                }
             }
         }
     }
@@ -142,7 +131,6 @@ bool Calculation (string entryCurrency, double number, string outgoingCurrency, 
     {
         Console.WriteLine($"{sign.Key} account = {sign.Value} {sign.Key}");
     }
-    return stopCircle = false;
 }
 
 string ReadOutgoingCurrency (double number, string incomingCurrency)
