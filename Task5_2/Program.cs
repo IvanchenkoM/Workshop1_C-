@@ -62,7 +62,18 @@ while(circle)
                 {
                     if (currency == accountBalance.ElementAt(i).Key)
                     {
-                        double amount = ReadDouble($"How many {currency.ToUpper()} do you want to convert?\t");
+                        string? x = ReadString($"How many {currency.ToUpper()} do you want to convert?\t");
+                        double amount;
+                        try
+                        {
+                            amount = double.Parse(x);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine($"Please enter only number.");
+                            break;
+                        }
+                        amount = Convert.ToDouble(x);
                         
                         if (amount > accountBalance.ElementAt(i).Value || amount < 0)
                         {
@@ -106,21 +117,6 @@ string ReadString(string msg)
     return Convert.ToString(Console.ReadLine())??String.Empty;
 }
 
-double ReadDouble(string msg)
-{
-    Console.Write(msg);
-    double temp = Convert.ToDouble(Console.ReadLine());
-    if (int.TryParse(Console.ReadLine(),out int num))
-    {
-        Console.Write("");
-    }
-    else
-    {
-        Console.WriteLine("Please enter only number");
-    }
-    return temp;
-}
-
 void Calculation (string entryCurrency, double number, string outgoingCurrency)
 {
     double[] myIntArray = new double[3];
@@ -151,7 +147,7 @@ void Calculation (string entryCurrency, double number, string outgoingCurrency)
             }
         }
     }
-    Console.WriteLine("\r\nYour accounts:\r\n");
+    Console.WriteLine("\r\nNow your accounts:\r\n");
     foreach (var sign in accountBalance)
     {
         Console.WriteLine($"{sign.Key} account = {WriteCurrencySing(sign.Key, sign.Value)}");
