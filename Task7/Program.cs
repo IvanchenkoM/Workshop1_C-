@@ -1,53 +1,39 @@
 ﻿// Написать функцию Shuffle, которая перемешивает эл-ты массива в случайном порядке.
 // Нельзя использовать встроенные функции массивов.
 
-int[] userArray = new int[] {1,2,3,4,5,6};
+int[] userArray = new int[] {5,6,7,8,9};
 
 PrintArray(userArray);
-Console.Write($"\r\nAdded element '{number}' to the array at index '{searchIndex}'. Get array: ");
-AddToArray(userArray, searchIndex, number);
-Console.Write($"\r\nRemoved element at index '{searchIndex}' from the array. Get array: ");
-RemoveFromArray(userArray,searchIndex);
+Console.Write($"\r\nArray with randomly shuffled elements: ");
+Shuffle(userArray);
 
 void Shuffle(int[] array)
 {
+    int[] indexArray = new int[array.Length];
+    for (int i=0; i<indexArray.Length; i++)
+    {
+        indexArray[i] = new Random().Next(0,indexArray.Length);
+        int number = indexArray[i];
+        if (i>=1)
+        {
+            for (int j=0; j<i; j++)
+            {
+                while (indexArray[i]==indexArray[j])
+                {
+                    indexArray[i] = new Random().Next(0,indexArray.Length);
+                    number = indexArray[i];
+                    j=0;
+                }
+            }
+        }
+    }
     int[] copyArray = new int[array.Length];
-    for (int i=0; i<array.Length; i++)
+    for (int i=0; i<copyArray.Length; i++)
     {
-        copyArray[i] = array[i];
+        int temp = indexArray[i];
+        copyArray[i] = array[temp];
     }
-    for (int i=0; i<array.Length; i++)
-    {
-        
-    }
-}
-
-void AddToArray(int[] array, int index, int value)
-{
-    int[] newArray = new int[array.Length+1];
-    for(int i=0; i<newArray.Length; i++)
-    {
-        if (i<index)
-            newArray[i] = array[i];
-        else if (i == index)
-            newArray[i] = value;
-        else if (i>index)
-            newArray[i] = array[i-1];
-    }
-    PrintArray(newArray);
-}
-
-void RemoveFromArray(int[] array, int index)
-{
-    int[] newArray = new int[array.Length-1];
-    for(int i=0; i<array.Length; i++)
-    {
-        if (i<index)
-            newArray[i] = array[i];
-        else if (i>index)
-            newArray[i-1] = array[i];
-    }
-    PrintArray(newArray);
+    PrintArray(copyArray);
 }
 
 void PrintArray(int[] array)
